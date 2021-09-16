@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Contract test</title>
+     <script src='node_modules/web3/dist/web3.min.js'></script>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.5.3-rc.0/web3.min.js" integrity="sha512-+18yqikfKtcOi8TjTjfcOdQsu8XaBg0JIJlZkhcsegIFgCGbQzAoTR1AeutQBNraEf8qCrSpua2EMugVWO+utA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+      
+
+          Web 3 Demo
+          <br >
+          <button onclick="printCoolNumber();">Print Cool Number</button>
+          <input id="datain" type="text">
+          <button onclick="changeCoolNumber();">Change Cool Number</button>
+          <br /><br />
+          Status: <span id="status">Loading...</span>
+      
+          <script type="text/javascript">
+               async function loadWeb3() {
+                    if (window.ethereum) {
+                        window.web3 = new Web3(window.ethereum);
+                        window.ethereum.enable();
+                    }
+                }
+                
+                async function load() {
+                    await loadWeb3();
+                    updateStatus('Ready!');
+                }
+                
+                function updateStatus(status) {
+                    const statusEl = document.getElementById('status');
+                    statusEl.innerHTML = status;
+                    console.log(status);
+                }
+                
+                load();
+                // contract address 0x3E23f61aaEc795aDab5Db83d101C756db47448b0
+                 
+                async function loadContract() {
+                     let ABI = [
+                     {
+                          "constant": true,
+                          "inputs": [],
+                          "name": "data",
+                          "outputs": [
+                               {
+                                    "internalType": "string",
+                                    "name": "",
+                                    "type": "string"
+                               }
+                          ],
+                          "payable": false,
+                          "stateMutability": "view",
+                          "type": "function"
+                     },
+                     {
+                          "constant": true,
+                          "inputs": [],
+                          "name": "get",
+                          "outputs": [
+                               {
+                                    "internalType": "string",
+                                    "name": "",
+                                    "type": "string"
+                               }
+                          ],
+                          "payable": false,
+                          "stateMutability": "view",
+                          "type": "function"
+                     },
+                     {
+                          "constant": false,
+                          "inputs": [
+                               {
+                                    "internalType": "string",
+                                    "name": "_data",
+                                    "type": "string"
+                               }
+                          ],
+                          "name": "set",
+                          "outputs": [],
+                          "payable": false,
+                          "stateMutability": "nonpayable",
+                          "type": "function"
+                     }
+                ];
+                    return await new window.web3.eth.Contract(ABI, '0x3E23f61aaEc795aDab5Db83d101C756db47448b0');
+                }
+                async function load() {
+                    await loadWeb3();
+                    window.contract = await loadContract();
+                    updateStatus('Ready!');
+                }
+
+                async function printCoolNumber() {
+                    updateStatus('fetching Data...');
+                    const coolNumber = await window.contract.methods.get().call();
+                    updateStatus(`Data: ${coolNumber}`);
+                }
+                async function changeCoolNumber() {
+                    var s = document.getElementById("datain").value;
+                    //const value = Math.floor(Math.random() * 100);
+                    updateStatus(`Updating Data with ${s}`);
+                    const account = await getCurrentAccount();
+                    const coolNumber = await window.contract.methods.set(s).send({ from: account });
+                    updateStatus('Updated.');
+                }
+                async function getCurrentAccount() {
+                    const accounts = await window.web3.eth.getAccounts();
+                    return accounts[0];
+                }
+          </script>
+       
+</body>
+</html>
