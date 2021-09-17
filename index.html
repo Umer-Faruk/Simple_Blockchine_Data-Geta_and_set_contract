@@ -12,9 +12,9 @@
 
           Web 3 Demo
           <br >
-          <button onclick="printCoolNumber();">Print Cool Number</button>
+          <button onclick="GetData();">Get data</button>
           <input id="datain" type="text">
-          <button onclick="changeCoolNumber();">Change Cool Number</button>
+          <button onclick="SetData();">Set Data</button>
           <br /><br />
           Status: <span id="status">Loading...</span>
       
@@ -96,12 +96,12 @@
                     updateStatus('Ready!');
                 }
 
-                async function printCoolNumber() {
+                async function GetData() {
                     updateStatus('fetching Data...');
                     const coolNumber = await window.contract.methods.get().call();
                     updateStatus(`Data: ${coolNumber}`);
                 }
-                async function changeCoolNumber() {
+                async function SetData() {
                     var s = document.getElementById("datain").value;
                     //const value = Math.floor(Math.random() * 100);
                     updateStatus(`Updating Data with ${s}`);
