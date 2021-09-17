@@ -1,6 +1,6 @@
 # Simple_Blockchine_Data-Geta_and_set_contract
 
-## comple SimpleStorage.sol (solidity script ) in remix to get ABI of the contract
+## compile SimpleStorage.sol (solidity script ) in remix to get ABI of the contract
 https://remix.ethereum.org/
 
 ## Test setup on Metamask
